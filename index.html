@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rota do Burger - Jundiaí</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter', 'Segoe UI', sans-serif}
+body{background:#0F0F0F;color:#fff;padding-bottom:100px}
+header{padding:16px 6%;display:flex;justify-content:space-between;align-items:center;background:#000;position:sticky;top:0;z-index:99;border-bottom:1px solid #222}
+.logo{font-weight:900;font-size:22px;letter-spacing:-0.5px} 
+.logo span{color:#FF2E2E}
+.hero{padding:60px 6%;background:radial-gradient(circle at 70% 20%, #3a1515, #000 60%);display:flex;gap:30px;flex-wrap:wrap;align-items:center}
+.hero h1{font-size:48px;line-height:1} 
+.hero h1 span{color:#FF2E2E}
+.hero p{color:#bbb;margin:15px 0 20px;max-width:460px;line-height:1.5}
+.btn{background:#FF2E2E;color:#fff;padding:14px 22px;border-radius:8px;text-decoration:none;font-weight:800;display:inline-block;border:none;cursor:pointer;transition:transform 0.2s, background 0.2s}
+.btn:hover{background:#e02424;transform:scale(1.02)}
+section{padding:50px 6%}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.card{background:#151515;border:1px solid #222;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:border-color 0.2s}
+.card:hover{border-color:#333}
+.card img{width:100%;height:180px;object-fit:cover}
+.info{padding:16px;flex:1;display:flex;flex-direction:column}
+.info h3{font-size:18px}
+.info p{color:#888;font-size:13px;margin:8px 0 14px;flex:1;line-height:1.4}
+.price-row{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.price{color:#FF2E2E;font-weight:800;font-size:18px}
+.card button{background:#222;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:700;transition:background 0.2s}
+.card button:hover{background:#FF2E2E}
+
+/* Toast de Notificação */
+#toast{position:fixed;top:80px;right:20px;background:#FF2E2E;color:#fff;padding:12px 20px;border-radius:8px;font-weight:700;display:none;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.5)}
+
+/* Footer Barra do Carrinho */
+#carrinho{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:1px solid #222;padding:14px 6%;display:flex;justify-content:space-between;align-items:center;z-index:100}
+.carrinho-info{cursor:pointer;display:flex;flex-direction:column}
+.carrinho-info span{font-size:15px;font-weight:700;color:#fff}
+.carrinho-info small{color:#888;font-size:12px}
+
+/* Modal do Carrinho */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:200;justify-content:center;align-items:center;padding:20px}
+.modal-content{background:#151515;border:1px solid #333;width:100%;max-width:500px;border-radius:14px;padding:20px;max-height:80vh;display:flex;flex-direction:column}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;border-bottom:1px solid #222;padding-bottom:10px}
+.modal-body{overflow-y:auto;flex:1;margin-bottom:15px}
+.item-linha{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #222}
+.item-controles{display:flex;gap:8px;align-items:center}
+.btn-qtd{background:#222;border:1px solid #444;color:#fff;width:26px;height:26px;border-radius:4px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div id="toast">Item adicionado!</div>
+
+<header>
+  <div class="logo">ROTA DO <span>BURGER</span></div>
+  <div style="font-size:13px;color:#888;text-align:right">R. Saldanha Marinho, 229 - Jundiaí/SP</div>
+</header>
+
+<div class="hero">
+  <div>
+    <h1>NA ROTA DO<br><span>SABOR ARTESANAL</span></h1>
+    <p>Hambúrguer artesanal 180g, costela 12h no bafo e chopp gelado. Peça direto e sem taxa de app.</p>
+    <a href="#cardapio" class="btn">VER CARDÁPIO</a>
+  </div>
+  <img src="https://images.unsplash.com/photo-1568909344668-6f14a07b56a0" alt="Hambúrguer Artesanal" style="width:380px;max-width:100%;border-radius:20px">
+</div>
+
+<section id="cardapio">
+  <h2 style="margin-bottom:20px">Nosso Cardápio</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1568909344668-6f14a07b56a0" alt="Rota Clássico">
+      <div class="info">
+        <h3>Rota Clássico</h3>
+        <p>Blend 180g, cheddar, alface, tomate e maionese da casa</p>
+        <div class="price-row">
+          <span class="price">R$ 29,90</span>
+          <button onclick="add('Rota Clássico', 29.90)">Adicionar</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5" alt="Rota Costela">
+      <div class="info">
+        <h3>Rota Costela</h3>
+        <p>Costela desfiada 12h, provolone, cebola caramelizada e barbecue</p>
+        <div class="price-row">
+          <span class="price">R$ 34,90</span>
+          <button onclick="add('Rota Costela', 34.90)">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1550547660-d9450f859349" alt="Rota Duplo Bacon">
+      <div class="info">
+        <h3>Rota Duplo Bacon</h3>
+        <p>2x 120g, bacon crocante, cheddar duplo e molho defumado</p>
+        <div class="price-row">
+          <span class="price">R$ 36,90</span>
+          <button onclick="add('Rota Duplo Bacon', 36.90)">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1585109649139-366815a0d713" alt="Cachorro-Quente Rota">
+      <div class="info">
+        <h3>Cachorro-Quente Rota</h3>
+        <p>Salsicha artesanal, cheddar, batata palha e vinagrete</p>
+        <div class="price-row">
+          <span class="price">R$ 22,90</span>
+          <button onclick="add('Cachorro-Quente Rota', 22.90)">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877" alt="Batata Rota 400g">
+      <div class="info">
+        <h3>Batata Rota 400g</h3>
+        <p>Rústica com cheddar, bacon e cebolinha</p>
+        <div class="price-row">
+          <span class="price">R$ 18,90</span>
+          <button onclick="add('Batata Rota', 18.90)">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1571613316887-6f8d5cbf7ef7" alt="Chopp Gelado 500ml">
+      <div class="info">
+        <h3>Chopp Gelado 500ml</h3>
+        <p>Chopp pilsen gelado na medida</p>
+        <div class="price-row">
+          <span class="price">R$ 12,00</span>
+          <button onclick="add('Chopp Gelado', 12.00)">Adicionar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Barra Inferior de Carrinho -->
+<div id="carrinho">
+  <div class="carrinho-info" onclick="toggleModal(true)">
+    <span id="info">🛒 Carrinho vazio</span>
+    <small id="subtext">Clique para ver os itens</small>
+  </div>
+  <a id="btnZap" class="btn" target="_blank" href="https://wa.me/5511933197047">Pedir no WhatsApp</a>
+</div>
+
+<!-- Modal Detalhes do Carrinho -->
+<div id="modalCarrinho" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Seu Pedido</h3>
+      <button onclick="toggleModal(false)" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer">&times;</button>
+    </div>
+    <div class="modal-body" id="modalItens">
+      <!-- Injetado via JS -->
+    </div>
+    <button class="btn" style="width:100%" onclick="toggleModal(false)">Voltar ao Menu</button>
+  </div>
+</div>
+
+<script>
+let carrinho = {};
+
+function add(nome, preco) {
+  if (carrinho[nome]) {
+    carrinho[nome].qtd++;
+  } else {
+    carrinho[nome] = { preco: preco, qtd: 1 };
+  }
+  
+  mostraToast(nome);
+  atualizar();
+}
+
+function alterarQtd(nome, delta) {
+  if (carrinho[nome]) {
+    carrinho[nome].qtd += delta;
+    if (carrinho[nome].qtd <= 0) {
+      delete carrinho[nome];
+    }
+  }
+  atualizar();
+}
+
+function formatarBRL(valor) {
+  return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function mostraToast(nome) {
+  const toast = document.getElementById('toast');
+  toast.innerText = `+1 ${nome}`;
+  toast.style.display = 'block';
+  setTimeout(() => { toast.style.display = 'none'; }, 1800);
+}
+
+function toggleModal(open) {
+  document.getElementById('modalCarrinho').style.display = open ? 'flex' : 'none';
+}
+
+function atualizar() {
+  let total = 0;
+  let qtdTotal = 0;
+  let itensHtml = '';
+  let msg = "Olá Rota do Burger! Quero pedir:%0A";
+
+  const nomes = Object.keys(carrinho);
+
+  if (nomes.length === 0) {
+    document.getElementById('info').innerText = '🛒 Carrinho vazio';
+    document.getElementById('subtext').innerText = 'Selecione seus itens acima';
+    document.getElementById('btnZap').innerText = 'Pedir no WhatsApp';
+    document.getElementById('btnZap').href = "https://wa.me/5511933197047";
+    document.getElementById('modalItens').innerHTML = '<p style="color:#888;text-align:center;padding:20px">Nenhum item adicionado ainda.</p>';
+    return;
+  }
+
+  nomes.forEach(nome => {
+    const item = carrinho[nome];
+    const subtotal = item.preco * item.qtd;
+    total += subtotal;
+    qtdTotal += item.qtd;
+
+    msg += `- ${item.qtd}x ${nome} (${formatarBRL(subtotal)})%0A`;
+
+    itensHtml += `
+      <div class="item-linha">
+        <div>
+          <div><strong>${nome}</strong></div>
+          <small style="color:#FF2E2E">${formatarBRL(subtotal)}</small>
+        </div>
+        <div class="item-controles">
+          <button class="btn-qtd" onclick="alterarQtd('${nome}', -1)">-</button>
+          <span>${item.qtd}</span>
+          <button class="btn-qtd" onclick="alterarQtd('${nome}', 1)">+</button>
+        </div>
+      </div>
+    `;
+  });
+
+  msg += `%0ATotal: ${formatarBRL(total)}%0A%0AMeu endereço: `;
+
+  document.getElementById('info').innerText = `🛒 ${qtdTotal} ${qtdTotal === 1 ? 'item' : 'itens'} - Total ${formatarBRL(total)}`;
+  document.getElementById('subtext').innerText = 'Clique para ver ou editar itens';
+  document.getElementById('btnZap').innerText = `Finalizar Pedido (${formatarBRL(total)})`;
+  document.getElementById('btnZap').href = "https://wa.me/5511933197047?text=" + msg;
+  
+  document.getElementById('modalItens').innerHTML = itensHtml;
+}
+</script>
+
+</body>
+</html>
